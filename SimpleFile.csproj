@@ -8,4 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bootstrap-dialog" Version="3.3.4.1" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.InputBox" Version="70.23.1.5" />
+    <PackageReference Include="WindowsAPICodePack" Version="7.0.4" />
+  </ItemGroup>
+
 </Project>
