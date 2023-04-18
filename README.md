@@ -1,7 +1,7 @@
 # SimpleFile
 文件处理工具箱
 
-# QUickUse
+# QuickUse
 
 1.选择文件夹，递归查找所有文件
 
