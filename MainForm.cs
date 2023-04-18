@@ -13,6 +13,18 @@ namespace SimpleFile
         {
             InitializeComponent();
             textFolderPath.KeyDown += FolderPathChange;
+            FilePaths.KeyDown += ALLSelect;
+        }
+
+        private void ALLSelect(object? sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                for (int i = 0; i < FilePaths.Items.Count; i++)
+                {
+                    FilePaths.Items[i].Checked = true;
+                }
+            }
         }
 
         public string FolderPath
@@ -48,8 +60,8 @@ namespace SimpleFile
             if (e.KeyCode == Keys.Enter)
             {
                 FolderPath = textFolderPath.Text;
+                RefreshFiles();
             }
-            RefreshFiles();
         }
 
         private void SelectFolder_Click(object sender, EventArgs e)
@@ -75,9 +87,11 @@ namespace SimpleFile
         private void Suffix_Click(object sender, EventArgs e)
         {
             var tarSuffix = KryptonInputBox.Show("后缀名");
+            ProgressBar.Value = 0;
             var selectFilesPaths = GetSelectFiles();
             for (int i = 0; i < selectFilesPaths.Count; i++)
             {
+                ProgressBar.Value++;
                 FileInfo file = new FileInfo(selectFilesPaths[i]);
                 if (!file.Exists)
                 {
@@ -88,14 +102,20 @@ namespace SimpleFile
                 var name = Path.GetFileNameWithoutExtension(file.FullName);
                 var dirName = Path.GetDirectoryName(file.FullName);
                 var tarPath = Path.Combine(dirName, name) + $".{tarSuffix}";
-
+                if (File.Exists(tarPath))
+                {
+                    continue;
+                }
                 file.MoveTo(tarPath);
 
             }
+            MessageBox.Show("完成");
+            RefreshFiles();
         }
 
         private void RefreshFiles()
         {
+            ProgressBar.Value = 0;
             var files = GetConditionFiles();
             FilePaths.Items.Clear();
             for (int i = 0; i < files.Count; i++)
@@ -107,6 +127,10 @@ namespace SimpleFile
         private List<FileInfo> GetConditionFiles()
         {
             List<FileInfo> filesList = new List<FileInfo>();
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return new List<FileInfo>();
+            }
             DirectoryInfo directory = new DirectoryInfo(folderPath);
             if (string.IsNullOrEmpty(FileSuffix))
             {
@@ -135,23 +159,48 @@ namespace SimpleFile
                     paths.Add(FilePaths.Items[i].Text);
                 }
             }
-
+            ProgressBar.Maximum = paths.Count;
             return paths;
+        }
+        private void Rename_Click(object sender, EventArgs e)
+        {
+            var reName = KryptonInputBox.Show("名字");
+            ProgressBar.Value = 0;
+            var selectFilesPaths = GetSelectFiles();
+            for (int i = 0; i < selectFilesPaths.Count; i++)
+            {
+                ProgressBar.Value++;
+                FileInfo file = new FileInfo(selectFilesPaths[i]);
+                if (!file.Exists)
+                {
+                    continue;
+                }
+                var targetFilePath = file.FullName;
+                var extension = Path.GetExtension(file.FullName);
+                var dirName = Path.GetDirectoryName(file.FullName);
+                var tarPath = Path.Combine(dirName, reName) + i.ToString() + extension;
+
+                file.MoveTo(tarPath);
+
+            }
+            MessageBox.Show("完成");
+            RefreshFiles();
         }
 
         private void Extraction_Click(object sender, EventArgs e)
         {
             bool isOK;
-            var  targetFolderPath = DialogTools.OpenFolder(out isOK);
+            var targetFolderPath = DialogTools.OpenFolder(out isOK);
             if (!isOK)
             {
                 return;
             }
 
-          
+            ProgressBar.Value = 0;
             var selectFilesPaths = GetSelectFiles();
             for (int i = 0; i < selectFilesPaths.Count; i++)
             {
+                ProgressBar.Value++;
                 FileInfo file = new FileInfo(selectFilesPaths[i]);
                 if (!file.Exists)
                 {
@@ -163,18 +212,21 @@ namespace SimpleFile
                 var name = Path.GetFileNameWithoutExtension(file.FullName);
                 var tarPath = Path.Combine(targetFolderPath, name) + extension;
 
-                if (tarPath== selectFilesPaths[i])
-                { 
+                if (tarPath == selectFilesPaths[i])
+                {
                     continue;
                 }
 
                 if (File.Exists(tarPath))
                 {
-                    tarPath = Path.Combine(targetFolderPath, name)+"_"+Path.GetRandomFileName()+extension;
+                    tarPath = Path.Combine(targetFolderPath, name) + "_" + Path.GetRandomFileName() + extension;
                 }
                 file.MoveTo(tarPath);
 
             }
+            MessageBox.Show("完成");
+            RefreshFiles();
         }
+
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             SelectFolder = new Button();
             textFolderPath = new TextBox();
             FilePaths = new ListView();
@@ -36,6 +37,9 @@
             Extraction = new Button();
             SelectSuffix = new Button();
             Refresh = new Button();
+            ProgressBar = new Krypton.Toolkit.KryptonProgressBar();
+            panel1 = new Panel();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // SelectFolder
@@ -50,10 +54,10 @@
             // 
             // textFolderPath
             // 
-            textFolderPath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            textFolderPath.Location = new Point(129, 24);
+            textFolderPath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            textFolderPath.Location = new Point(18, 3);
             textFolderPath.Name = "textFolderPath";
-            textFolderPath.Size = new Size(627, 23);
+            textFolderPath.Size = new Size(819, 23);
             textFolderPath.TabIndex = 1;
             // 
             // FilePaths
@@ -62,9 +66,9 @@
             FilePaths.CheckBoxes = true;
             FilePaths.FullRowSelect = true;
             FilePaths.GridLines = true;
-            FilePaths.Location = new Point(129, 59);
+            FilePaths.Location = new Point(18, 35);
             FilePaths.Name = "FilePaths";
-            FilePaths.Size = new Size(627, 355);
+            FilePaths.Size = new Size(819, 486);
             FilePaths.TabIndex = 2;
             FilePaths.UseCompatibleStateImageBehavior = false;
             FilePaths.View = View.List;
@@ -72,17 +76,18 @@
             // Rename
             // 
             Rename.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            Rename.Location = new Point(28, 388);
+            Rename.Location = new Point(28, 524);
             Rename.Name = "Rename";
             Rename.Size = new Size(75, 23);
             Rename.TabIndex = 3;
             Rename.Text = "重命名";
             Rename.UseVisualStyleBackColor = true;
+            Rename.Click += Rename_Click;
             // 
             // Suffix
             // 
             Suffix.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            Suffix.Location = new Point(28, 359);
+            Suffix.Location = new Point(28, 495);
             Suffix.Name = "Suffix";
             Suffix.Size = new Size(75, 23);
             Suffix.TabIndex = 4;
@@ -93,7 +98,7 @@
             // Extraction
             // 
             Extraction.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            Extraction.Location = new Point(28, 330);
+            Extraction.Location = new Point(28, 466);
             Extraction.Name = "Extraction";
             Extraction.Size = new Size(75, 23);
             Extraction.TabIndex = 5;
@@ -121,23 +126,46 @@
             Refresh.UseVisualStyleBackColor = true;
             Refresh.Click += Refresh_Click;
             // 
+            // ProgressBar
+            // 
+            ProgressBar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ProgressBar.Location = new Point(18, 527);
+            ProgressBar.Name = "ProgressBar";
+            ProgressBar.Size = new Size(819, 23);
+            ProgressBar.Step = 1;
+            ProgressBar.TabIndex = 8;
+            ProgressBar.UseKrypton = true;
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.Controls.Add(textFolderPath);
+            panel1.Controls.Add(ProgressBar);
+            panel1.Controls.Add(FilePaths);
+            panel1.Location = new Point(129, 21);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(854, 553);
+            panel1.TabIndex = 9;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(995, 586);
+            Controls.Add(panel1);
             Controls.Add(Refresh);
             Controls.Add(SelectSuffix);
             Controls.Add(Extraction);
             Controls.Add(Suffix);
             Controls.Add(Rename);
-            Controls.Add(FilePaths);
-            Controls.Add(textFolderPath);
             Controls.Add(SelectFolder);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
-            Text = "Form1";
+            Text = "SimpleFile";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -150,5 +178,7 @@
         private Button Extraction;
         private Button SelectSuffix;
         private Button Refresh;
+        private Krypton.Toolkit.KryptonProgressBar ProgressBar;
+        private Panel panel1;
     }
 }
