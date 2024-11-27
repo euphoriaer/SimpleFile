@@ -246,7 +246,7 @@ namespace SimpleFile
                 string input = Path.GetFileNameWithoutExtension(file.FullName);
 
                 // 使用正则表达式匹配所有非中文、非字母和非数字的字符
-                string pattern = @"[^\p{IsHan}\p{L}\p{N}]";
+                string pattern = @"[^\u4e00-\u9fa5\p{L}\p{N}]";
 
                 // 替换匹配到的字符为空字符串
                 string result = Regex.Replace(input, pattern, "");
