@@ -1,6 +1,8 @@
 using Krypton.Toolkit;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace SimpleFile
 {
@@ -228,5 +230,39 @@ namespace SimpleFile
             RefreshFiles();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ProgressBar.Value = 0;
+            var selectFilesPaths = GetSelectFiles();
+            for (int i = 0; i < selectFilesPaths.Count; i++)
+            {
+                ProgressBar.Value++;
+                FileInfo file = new FileInfo(selectFilesPaths[i]);
+                if (!file.Exists)
+                {
+                    continue;
+                }
+
+                string input = Path.GetFileNameWithoutExtension(file.FullName);
+
+                // 使用正则表达式匹配所有非中文、非字母和非数字的字符
+                string pattern = @"[^\p{IsHan}\p{L}\p{N}]";
+
+                // 替换匹配到的字符为空字符串
+                string result = Regex.Replace(input, pattern, "");
+
+                Console.WriteLine(result);  // 输出: 你好世界HelloWorld1234
+
+                var targetFilePath = file.FullName;
+                var extension = Path.GetExtension(file.FullName);
+                var dirName = Path.GetDirectoryName(file.FullName);
+                var tarPath = Path.Combine(dirName, result)+extension;
+
+                file.MoveTo(tarPath);
+
+            }
+            MessageBox.Show("完成");
+            RefreshFiles();
+        }
     }
 }

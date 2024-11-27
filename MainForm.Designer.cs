@@ -39,6 +39,7 @@
             Refresh = new Button();
             ProgressBar = new Krypton.Toolkit.KryptonProgressBar();
             panel1 = new Panel();
+            button1 = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -147,12 +148,24 @@
             panel1.Size = new Size(854, 553);
             panel1.TabIndex = 9;
             // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button1.Location = new Point(28, 415);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 45);
+            button1.TabIndex = 10;
+            button1.Text = "命名字符去除";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(995, 586);
+            Controls.Add(button1);
             Controls.Add(panel1);
             Controls.Add(Refresh);
             Controls.Add(SelectSuffix);
@@ -180,5 +193,6 @@
         private Button Refresh;
         private Krypton.Toolkit.KryptonProgressBar ProgressBar;
         private Panel panel1;
+        private Button button1;
     }
 }
